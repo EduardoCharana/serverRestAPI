@@ -1,35 +1,35 @@
-name: Newman run 
+name: Newman Run
 
-on:  
+on: 
   push:
     branches:
-        - main 
-
-
+      - main
 jobs:
   newman:
-      runs-on: ubuntu-latest
-      steps:
-        - uses: actions/checkout@3
+    runs-on: ubuntu-latest 
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Create dir 
+        run: |
+          mkdir testArtifacts
+          
 
-        - name: create dir for report
-          run: |
-            mkdir testArtifacts
-
-        - name: Install Newman
-          run: 
-            npm install -g newman 
-            npm install -g newman-reporter-htmlextra
-
-        - name: Run Test
-          run: newman run ServerRest.postman_collection.json -e ServerRest_env.postman_environment.json -r cli,htmlextra
-
-        - name: Report
-          uses: actions/upload-artifacts@v3.1.2
-          with: 
-            name: Reports
-            path: newman
+      - name: Install Node
+        uses: actions/setup-node@v3.4.1
         
+      - name: Install Newman 
+        run: |
+          npm install -g newman
+          npm install -g newman-reporter-htmlextra
+      - name: Run Test
+        run: newman run ServeRest.postman_collection.json -e serveRest_env.postman_environment.json -r cli,htmlextra
+        
+      - name: Report
+        uses: actions/upload-artifact@v3.1.2 
+        with:
+          name: Reports 
+          path: newman
 
 
       
